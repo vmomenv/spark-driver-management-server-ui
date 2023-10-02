@@ -9,7 +9,7 @@
       text-color="#fff"
       active-text-color="#ffd04b"
     >
-    <h3>星火驱动管理后台</h3>
+    <h3>{{ isCollapse?'后台':'星火驱动管理后台' }}</h3>
     <el-menu-item @click="clickMenu(item)" v-for="item in noChildren" :key="item.name" :index="item.name">
         <i :class="`el-icon-${item.icon}`"></i>
         <span slot="title">{{item.label}}</span>
@@ -50,7 +50,6 @@ import { Submenu } from 'element-ui';
     export default {
       data() {
         return {
-          isCollapse: false,
           menuData:[
             {
                 path:"/",
@@ -111,8 +110,8 @@ import { Submenu } from 'element-ui';
           if(this.$route.path!== item.path && !(this.$route.path ==='/home' && (item.path==='/home' || item.path==='/'))){
             this.$router.push(item.path)
           }
-
         }
+        
       },
       //计算数据过滤，应对不同账号权限问题
       computed:{
@@ -121,9 +120,17 @@ import { Submenu } from 'element-ui';
         },
         hasChildren(){
           return this.menuData.filter(item=>item.children)
+        },isCollapse(){
+          return this.$store.state.tab.isCollapse
         }
+
       }
 
 
     }
   </script>
+<style lang="less" scoped>
+  .el-menu{
+    border-right: none;
+  }
+</style>

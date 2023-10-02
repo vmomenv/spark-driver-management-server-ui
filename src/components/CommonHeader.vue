@@ -1,7 +1,7 @@
 <template>
     <div class="head-container">
         <div class="l-content">
-            <el-button icon="el-icon-menu" size="mini"></el-button>
+            <el-button @click="handleMenu" icon="el-icon-menu" size="mini"></el-button>
             <!-- 面包屑 -->
             <span class="text">首页</span>
         </div>
@@ -19,9 +19,16 @@
     </div>
 </template>
 <script>
+import { CollapseItem } from 'element-ui';
+
 export default {
     data(){
         return{}
+    },
+    methods:{
+        handleMenu(){
+            this.$store.commit('collapseMenu')
+        }
     }
 }
 </script>
