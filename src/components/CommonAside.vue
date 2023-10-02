@@ -10,7 +10,7 @@
       active-text-color="#ffd04b"
     >
     <h3>星火驱动管理后台</h3>
-    <el-menu-item v-for="item in noChildren" :key="item.name" :index="item.name">
+    <el-menu-item @click="clickMenu(item)" v-for="item in noChildren" :key="item.name" :index="item.name">
         <i :class="`el-icon-${item.icon}`"></i>
         <span slot="title">{{item.label}}</span>
       </el-menu-item>
@@ -20,7 +20,7 @@
         <span slot="title">{{item.label}}</span>
       </template>
       <el-menu-item-group v-for="subItem in item.children" :key="subItem.path">
-        <el-menu-item :index="subItem.path">{{subItem.label}}</el-menu-item>
+        <el-menu-item @click="clickMenu(subItem)" :index="subItem.path">{{subItem.label}}</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
   </el-menu>
@@ -58,26 +58,21 @@ import { Submenu } from 'element-ui';
                 label:"首页",
                 icon:"s-home",
                 url:"Home/home"
-            },{
+            }
+            ,{
+                path:"/file",
+                name:"file",
+                label:"文件管理",
+                icon:"files",
+                url:"File/file"
+            }
+            ,{
                 path:"/user",
                 name:"user",
                 label:"用户管理",
                 icon:"s-custom",
                 url:"User/user"
             },{
-                path:"/role",
-                name:"role",
-                label:"角色管理",
-                icon:"s-data",
-                url:"Role/role"
-            },{
-                path:"/menu",
-                name:"menu",
-                label:"菜单管理",
-                icon:"s-grid",
-                url:"Menu/menu"
-            }
-            ,{
               label:"其他",
               icon:"location",
               children:[
@@ -87,6 +82,13 @@ import { Submenu } from 'element-ui';
                   label:"页面1",
                   icon:"setting",
                   url:"Other/PageOne"
+                },
+                {
+                  path:"/page2",
+                  name:"page2",
+                  label:"页面2",
+                  icon:"setting",
+                  url:"Other/PageTwo"
                 }
               ]
               }
@@ -101,6 +103,15 @@ import { Submenu } from 'element-ui';
         },
         handleClose(key, keyPath) {
           console.log(key, keyPath);
+        },
+        //点击菜单跳转
+        clickMenu(item){
+          console.log(item)
+          //当页面路由与item.path相同时，不跳转(y与跳转路由不一致时才允许跳转)
+          if(this.$route.path!== item.path && !(this.$route.path ==='/home' && (item.path==='/home' || item.path==='/'))){
+            this.$router.push(item.path)
+          }
+
         }
       },
       //计算数据过滤，应对不同账号权限问题
