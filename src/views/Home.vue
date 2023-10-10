@@ -1,7 +1,7 @@
 <template>
     <el-row>
-        <el-col :span="8">
-            <el-card class="box-card">
+        <el-col :span="8" style="padding-right:10px">
+            <el-card class="box-card" >
                 <div class="user">
                     <img src="../assets/logo.png" alt="">
                     <div class="userinfo">
@@ -22,7 +22,7 @@
               </el-table>
               </el-card>
         </el-col>
-        <el-col :span="16">
+        <el-col :span="16" style="padding-left:10px">
             <div class="num"> 
                 <el-card v-for="item in countData" :key="item.name" :body-style="{display:'flex',padding:0}">
                     <i class="icon" :class="`el-icon-${item.icon}`" :style="{background:item.color}"></i>
@@ -32,30 +32,39 @@
                     </div>
                 </el-card>
             </div>
+            <el-card style="height:100px">
+              <p>{{dailyInfo.dailyInfo}}</p>
+            </el-card>
+            <el-card style="height:280px ;margin-top:20px">
+              <!-- 折线图 -->
+              <div ref="echarts1" style="height:280px">
+              </div>
+            </el-card>
+            <div class="graph">
+              <el-card style="height:260px">
+                <div ref="echarts2" style="height:260px"></div>
+              </el-card>
+              <el-card style="height:260px">
+                <div ref="echarts3" style="height:240px"></div>
+              </el-card>
+            </div>
         </el-col>
       </el-row>
 </template>
 <script>
+import { getData } from '../api'
+import * as echarts from 'echarts'
 export default {
     data(){
         return{
-            tableData: [{
-            uploaddate: '2023-05-02',
-            packagename: 'chaoxin_1.8.3_amd64.deb',
-            packagestatus: '已驳回'
-          }, {
-            uploaddate: '2023-05-04',
-            packagename: 'com.huaweicloud.welink.spark',
-            packagestatus: '已上架'
-          }, {
-            uploaddate: '2023-05-01',
-            packagename: 'com.lhmeeting.client',
-            packagestatus: '已驳回'
-          }],
+          dailyInfo:{
+            dailyInfo:'今天没消息哦'
+          },    
+            tableData: [],
           tableLabel:{
-            uploaddate: '上传日期',
-            packagename: '包名',
-            packagestatus: '状态'
+            uploadDate: '上传日期',
+            packageName: '包名',
+            packageStatus: '状态'
           },countData:[
             {
               name:'今日已上架',
@@ -88,11 +97,117 @@ export default {
               icon: 'warning',
               color: '#e6a23c',
             }
-          ]
-
-        
-      
+          ],
         }
+    },
+    //取数据
+    mounted() {
+      getData().then(({data})=>{
+        const  {tableData}=data.data
+        console.log(data.data)
+        this.tableData=tableData
+        //基于准备好的dom,初始化echarts实例
+        const echarts1=echarts.init(this.$refs.echarts1)
+        // 指定图表的配置项和数据
+        var echarts1Option={}
+        //处理数据xAxis
+        const {orderData,userData,typeData}=data.data
+        const xAxis = Object.keys(orderData.data[0])
+        const xAxisData={
+          data:xAxis
+        }
+        echarts1Option.xAxis=xAxisData
+        echarts1Option.yAxis={}
+        echarts1Option.legend=xAxisData
+        echarts1Option.series=[]
+        xAxis.forEach(key=>{
+          echarts1Option.series.push({
+            name:key,
+            data:orderData.data.map(item =>item[key]),
+            type:'line',
+          })
+        })
+
+        console.log(echarts1Option)
+        // 使用刚指定的配置项和数据显示图表。
+        echarts1.setOption(echarts1Option)
+
+//柱状图  
+const echarts2 = echarts.init(this.$refs.echarts2);  
+const echarts2Option = {  
+          legend:{  
+            textStyle:{  
+              color:"#333",  
+            },  
+          },  
+          grid:{  
+            left:"20%",  
+          },  
+          //提示框  
+          tooltip:{  
+            trigger:"axis",  
+          },  
+          xAxis:{  
+            type:"category",  
+            data:userData.map(item => item.date),  
+            axisLine:{  
+              linestyle:{  
+                color:"#17b3a3",  
+              },  
+            },  
+            axisLabel:{  
+              interval:0,  
+              color:"#333",  
+            },  
+          },  
+          yAxis:[  
+            {  
+              type:"value",  
+              axisLine:{  
+                linestyle:{  
+                  color:"#17b3a3",  
+                },  
+              },  
+
+            },  
+          ],  
+          color:["#2ec7c9","#b6a2de"],  
+          series:[  
+            {  
+              name:'新增用户',  
+              data:userData.map(item =>item.new),  
+              type:'bar'  
+            },  
+            {  
+              name:'活跃用户',  
+              data:userData.map(item =>item.active),  
+              type:'bar'  
+            }  
+          ]   
+        }   
+        echarts2.setOption(echarts2Option);
+        //饼状图
+        const echarts3=echarts.init(this.$refs.echarts3)
+        const echarts3Option={
+          tooltip:{
+            trigger:"item",
+          },
+          color:[
+            "#0f78f4",
+            "#dd536b",
+            "#9462e5",
+            "#a6a6a6",
+            "#e1bb22",
+            "#39c362",
+            "#3ed1cf",
+          ],
+          series:[{
+            data:typeData,
+            type:'pie'
+          }],
+        }
+        echarts3.setOption(echarts3Option)
+      })
     }
 }
 </script>
@@ -164,6 +279,14 @@ export default {
     .el-card{
         width:32%;
         margin-bottom: 20px;
+    }
+}
+.graph{
+    margin-top:20px;
+    display: flex;
+    justify-content: space-between;
+    .el-card{
+      width:48%;
     }
 }
 </style>
