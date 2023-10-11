@@ -3,11 +3,14 @@
         <div class="l-content">
             <el-button @click="handleMenu" icon="el-icon-menu" size="mini"></el-button>
             <!-- 面包屑 -->
-            <span class="text">首页</span>
+            <el-breadcrumb separator="/">
+                <el-breadcrumb-item v-for="item in tags" :key="item.path" :to="{ path: item.path }">{{ item.label }}</el-breadcrumb-item>
+
+              </el-breadcrumb>
         </div>
         <div class="r-content">
             <el-dropdown>
-                <span class="el-dropdown-link">
+                <span class="el-dropdown-link">0
                     <img class="user" src="../assets/logo.png" alt="">
                 </span>
                 <el-dropdown-menu slot="dropdown">
@@ -20,6 +23,7 @@
 </template>
 <script>
 import { CollapseItem } from 'element-ui';
+import{mapState} from 'vuex'
 
 export default {
     data(){
@@ -29,6 +33,14 @@ export default {
         handleMenu(){
             this.$store.commit('collapseMenu')
         }
+    },
+    computed:{
+        ...mapState({
+            tags:state=> state.tab.tabsList
+        })
+    },
+    mounted(){
+        console.log(this.tags,'tags')  
     }
 }
 </script>
