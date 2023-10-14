@@ -36,7 +36,21 @@ export default{
             this.closeTag(item)
             //点击tag删除
             const length = this.tags.length-1
-
+            //删除之后的跳转逻辑
+            if(item.name !==this.$route.name){
+                return
+            }
+            //表示删除的为最后一项
+            if(item.name ===length){
+                this.$router.push({
+                    name:this.tags[index-1].name
+                })
+            }else{
+                    this.$router.push({
+                        name:this.tags[index].name
+                    })
+                }
+            
         }
     }
 }
