@@ -27,6 +27,10 @@ export default {
                     state.tabsList.push(val)
                 }
             }
+        },
+        //删除指定tag
+        closeTag(item) {
+            console.log(item, 'item')
         }
     }
 }

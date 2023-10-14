@@ -19,11 +19,11 @@ const routes = [
         component: Main,
         redirect: '/home', //当路径为/时重定向到home
         children: [
-            { path: 'home', component: Home },
-            { path: 'user', component: User },
-            { path: 'file', component: File },
-            { path: 'page1', component: PageOne },
-            { path: 'page2', component: PageTwo }
+            { path: 'home', name: 'home', component: Home },
+            { path: 'user', name: 'user', component: User },
+            { path: 'file', name: 'file', component: File },
+            { path: 'page1', name: 'page1', component: PageOne },
+            { path: 'page2', name: 'page2', component: PageTwo }
         ]
     }
 ]
