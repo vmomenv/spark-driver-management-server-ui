@@ -35,13 +35,13 @@ export default{
             //调用store中的mutation
             this.closeTag(item)
             //点击tag删除
-            const length = this.tags.length-1
+            const length = this.tags.length 
             //删除之后的跳转逻辑
             if(item.name !==this.$route.name){
                 return
             }
             //表示删除的为最后一项
-            if(item.name ===length){
+            if(index ===length){
                 this.$router.push({
                     name:this.tags[index-1].name
                 })
@@ -49,7 +49,7 @@ export default{
                     this.$router.push({
                         name:this.tags[index].name
                     })
-                }
+            }
             
         }
     }
