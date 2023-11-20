@@ -44,24 +44,25 @@
               :data="tableData"
               style="width: 100%">
               <el-table-column
-                prop="date"
-                label="日期"
-                width="180">
-              </el-table-column>
-              <el-table-column
                 prop="name"
                 label="姓名"
                 width="180">
               </el-table-column>
               <el-table-column
-                prop="address"
-                label="地址">
+                prop="sex"
+                label="性别"
+                width="180">
+              </el-table-column>
+              <el-table-column
+                prop="age"
+                label="年龄">
               </el-table-column>
         </el-table>
       </div>
     </div>
 </template>
 <script>
+import {getUser} from '../api'
 export default {
     data(){
         return{
@@ -81,7 +82,7 @@ export default {
               addr:[{ required: true, message: '请输入地址'}]
             },
             tableData:[
-                 
+
             ]
               
         }
@@ -109,6 +110,12 @@ export default {
       cancel(){
         this.handleClose()
       }
+    },
+    mounted(){
+      //获取的列表数据
+      getUser().then(({data})=>{
+        console.log(data)
+      })
     }
 }
 </script>
