@@ -45,18 +45,36 @@
               style="width: 100%">
               <el-table-column
                 prop="name"
-                label="姓名"
-                width="180">
+                label="姓名">
               </el-table-column>
               <el-table-column
-                prop="sex"
-                label="性别"
-                width="180">
+                prop="sexLabel"
+                label="性别">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.sex ==1 ? '男':'女'}}</span>
+                </template>
               </el-table-column>
               <el-table-column
                 prop="age"
                 label="年龄">
               </el-table-column>
+              <el-table-column
+                prop="birth"
+                label="出生日期">
+              </el-table-column>
+              <el-table-column
+                prop="addr"
+                label="地址">
+              </el-table-column>
+              <el-table-column
+                prop="addr"
+                label="地址">
+                <template slot-scope="scope">
+                  <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+                  <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+
         </el-table>
       </div>
     </div>
@@ -109,12 +127,19 @@ export default {
       },
       cancel(){
         this.handleClose()
+      },
+      handleEdit(row){
+
+      },
+      handleDelete(row){
+
       }
     },
     mounted(){
       //获取的列表数据
       getUser().then(({data})=>{
         console.log(data)
+        this.tableData=data.list
       })
     }
 }
