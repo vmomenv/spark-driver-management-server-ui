@@ -37,7 +37,7 @@
         </span>
       </el-dialog>
       <div class="manage-header">
-        <el-button @click="dialogVisible=true" type="primary">
+        <el-button @click="handleAdd" type="primary">
             + 新增
         </el-button> 
           <el-table
@@ -80,7 +80,7 @@
     </div>
 </template>
 <script>
-import {getUser} from '../api'
+import {getUser,addUser,editUser} from '../api'
 export default {
     data(){
         return{
@@ -101,7 +101,8 @@ export default {
             },
             tableData:[
 
-            ]
+            ],
+            modelType:0 //0表示新增的弹窗，1表示编辑的弹窗 
               
         }
     },
@@ -110,8 +111,22 @@ export default {
         this.$refs.form.validate((valid)=>{
           console.log(valid,'valid')
           if(valid){
+            //对表单进行处理
+            if(modelType === 0){
+                addUser(this.form),then(()=>{
+                  //再次调用获取列表的接口以更新数据
+                  this.getList()
+                })
+            }else{
+                editUser(this.form),then(()=>{
+                  //再次调用获取列表的接口以更新数据
+                  this.getList()
+                })
+            }
+            
             //表单数据
-            console.log(this.form,"form")
+            console .log(this.form,"form")
+
             //重置表单
             this.$refs.form.resetFields()
             //关闭弹窗
@@ -133,14 +148,17 @@ export default {
       },
       handleDelete(row){
 
+      },
+      getList(){
+          //获取的列表数据
+          getUser().then(({data})=>{
+            console.log(data)
+            this.tableData=data.list
+          })
       }
     },
     mounted(){
-      //获取的列表数据
-      getUser().then(({data})=>{
-        console.log(data)
-        this.tableData=data.list
-      })
+        this.getList()
     }
 }
 </script>
