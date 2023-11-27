@@ -102,7 +102,7 @@ export default {
             tableData:[
 
             ],
-            modelType:0 //0表示新增的弹窗，1表示编辑的弹窗 
+            modalType:0 //0表示新增的弹窗，1表示编辑的弹窗 
               
         }
     },
@@ -112,13 +112,13 @@ export default {
           console.log(valid,'valid')
           if(valid){
             //对表单进行处理
-            if(modelType === 0){
-                addUser(this.form),then(()=>{
+            if(this.modalType === 0){
+                addUser(this.form).then(()=>{
                   //再次调用获取列表的接口以更新数据
                   this.getList()
                 })
             }else{
-                editUser(this.form),then(()=>{
+                editUser(this.form).then(()=>{
                   //再次调用获取列表的接口以更新数据
                   this.getList()
                 })
@@ -144,10 +144,14 @@ export default {
         this.handleClose()
       },
       handleEdit(row){
-
+        this.modalType=1
       },
       handleDelete(row){
 
+      },
+      handleAdd(){
+        this.modalType=0
+        this.dialogVisible=true
       },
       getList(){
           //获取的列表数据
