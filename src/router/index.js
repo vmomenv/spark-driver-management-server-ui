@@ -6,7 +6,7 @@ import Main from '../views/Main.vue'
 import File from '../views/File.vue'
 import PageOne from '../views/PageOne.vue'
 import PageTwo from '../views/PageTwo.vue'
-
+import Login from '../views/Login.vue'
 
 
 Vue.use(VueRouter)
@@ -25,6 +25,10 @@ const routes = [
             { path: 'page1', name: 'page1', component: PageOne },
             { path: 'page2', name: 'page2', component: PageTwo }
         ]
+    },
+    {
+        path:'/login',
+        component:Login
     }
 ]
 
