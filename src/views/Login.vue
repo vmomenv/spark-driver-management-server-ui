@@ -8,12 +8,14 @@
             <el-input type="password" v-model="form.password" placeholder="请输入密码"></el-input>
         </el-form-item>
         <el-form-item>
-            <el-button style="margin-left:105px;margin-top:10px" type="primary">登录</el-button>
+            <el-button @click="submit" style="margin-left:105px;margin-top:10px" type="primary">登录</el-button>
         </el-form-item>
     </el-form>
 </template>
 <script>
-    export default{
+import Mock from 'mockjs'
+import Cookie from "js-cookie"
+export default{
         data(){
             return  {
                 form:{
@@ -29,6 +31,15 @@
                     ]
                 }
             }
+        },
+        methods:{
+            //登录
+            submit(){
+                //token信息
+                const token = Mock.Random.guid()
+                //token信息存入cookie用于不同页面间通信
+                Cookie.set('token',token)
+            }
         }
     }
 </script>
@@ -42,7 +53,7 @@
         border-radius: 15px;
         box-shadow: 0 0 25px #cac6c6;
         box-sizing: border-box;
-        .login-title{
+        .login_title{
             text-align: center;
             margin-bottom: 40px;
             color:#505458; 
