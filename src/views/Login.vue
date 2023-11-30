@@ -46,9 +46,11 @@ export default{
                             if(data.code === 20000){
                                 // //token信息存入cookie用于不同页面间通信
                                 Cookie.set('token',data.data.token)
+                                this.$message.success('登录成功')
                                 //跳转到首页
                                  this.$router.push('/home')
-
+                            }else{
+                                this.$message.error(data.data.message)
                             }
                         })
                     }
