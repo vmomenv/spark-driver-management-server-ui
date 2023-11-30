@@ -39,6 +39,8 @@ export default{
                 const token = Mock.Random.guid()
                 //token信息存入cookie用于不同页面间通信
                 Cookie.set('token',token)
+                //跳转到首页
+                 this.$router.push('/home')
             }
         }
     }
