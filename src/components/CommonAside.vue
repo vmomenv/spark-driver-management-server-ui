@@ -46,52 +46,52 @@
   
   <script>
 import { Submenu } from 'element-ui';
-
+import Cookie from 'js-cookie'
     export default {
       data() {
         return {
-          menuData:[
-            {
-                path:"/",
-                name:"home",
-                label:"首页",
-                icon:"s-home",
-                url:"Home/home"
-            }
-            ,{
-                path:"/file",
-                name:"file",
-                label:"文件管理",
-                icon:"files",
-                url:"File/file"
-            }
-            ,{
-                path:"/user",
-                name:"user",
-                label:"用户管理",
-                icon:"s-custom",
-                url:"User/user"
-            },{
-              label:"其他",
-              icon:"location",
-              children:[
-                {
-                  path:"/page1",
-                  name:"page1",
-                  label:"页面1",
-                  icon:"setting",
-                  url:"Other/PageOne"
-                },
-                {
-                  path:"/page2",
-                  name:"page2",
-                  label:"页面2",
-                  icon:"setting",
-                  url:"Other/PageTwo"
-                }
-              ]
-              }
-            ]
+          // menuData:[
+          //   {
+          //       path:"/",
+          //       name:"home",
+          //       label:"首页",
+          //       icon:"s-home",
+          //       url:"Home/home"
+          //   }
+          //   ,{
+          //       path:"/file",
+          //       name:"file",
+          //       label:"文件管理",
+          //       icon:"files",
+          //       url:"File/file"
+          //   }
+          //   ,{
+          //       path:"/user",
+          //       name:"user",
+          //       label:"用户管理",
+          //       icon:"s-custom",
+          //       url:"User/user"
+          //   },{
+          //     label:"其他",
+          //     icon:"location",
+          //     children:[
+          //       {
+          //         path:"/page1",
+          //         name:"page1",
+          //         label:"页面1",
+          //         icon:"setting",
+          //         url:"Other/PageOne"
+          //       },
+          //       {
+          //         path:"/page2",
+          //         name:"page2",
+          //         label:"页面2",
+          //         icon:"setting",
+          //         url:"Other/PageTwo"
+          //       }
+          //     ]
+          //     }
+          //   ]
 
             
         };
@@ -121,7 +121,12 @@ import { Submenu } from 'element-ui';
         },
         hasChildren(){
           return this.menuData.filter(item=>item.children)
-        },isCollapse(){
+        },
+        menuData(){
+          //判断当前数据，如果缓存中没有，则从当前store中获取
+          return JSON.parse(Cookie.get('menu'))||this.$store.state.tab.menu
+         },        
+        isCollapse(){
           return this.$store.state.tab.isCollapse
         }
 

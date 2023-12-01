@@ -47,9 +47,14 @@ export default{
                                 // //token信息存入cookie用于不同页面间通信
                                 Cookie.set('token',data.data.token)
                                 this.$message.success('登录成功')
+
+                                //获取菜单的数据，存入store中
+                                this.$store.commit('setMenu',data.data.menu)
+                                
                                 //跳转到首页
                                  this.$router.push('/home')
                             }else{
+                                
                                 this.$message.error(data.data.message)
                             }
                         })

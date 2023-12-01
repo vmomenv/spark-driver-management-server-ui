@@ -1,15 +1,16 @@
+import Cookie from "js-cookie"
 //管理菜单相关数据
 export default {
     state: {
         isCollapse: false, //用于控制菜单展开与收起
         tabsList: [{
-                path: "/",
-                name: "home",
-                label: "首页",
-                icon: "s-home",
-                url: "Home/home"
-            }]
-            //面包屑数据
+            path: "/",
+            name: "home",
+            label: "首页",
+            icon: "s-home",
+            url: "Home/home"
+        }], //面包屑数据
+        menu: []
     },
     mutations: {
         //修改菜单展开收起的方法
@@ -33,6 +34,12 @@ export default {
             console.log(item, 'item')
             const index = state.tabsList.findIndex(val => val.name === item.name)
             state.tabsList.splice(index, 1)
+        },
+        //设置menu的数据
+        setMenu(state, val) {
+            state.menu = val;
+            Cookie.set('menu', JSON.stringify(val))
+
         }
     }
 }
