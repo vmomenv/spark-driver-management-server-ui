@@ -1,3 +1,4 @@
+import jsCookie from "js-cookie"
 import Cookie from "js-cookie"
 //管理菜单相关数据
 export default {
@@ -39,6 +40,30 @@ export default {
         setMenu(state, val) {
             state.menu = val;
             Cookie.set('menu', JSON.stringify(val))
+        },
+        //动态注册路由
+        addMenu(state, router) {
+            //判断缓存中是否由数据
+            if (Cookie.get('menu')) return
+            const menu = JSON.parse(Cookie.get('menu'))
+            state.menu = menu
+                //组装动态路由数据
+            const menuArray = []
+            menu.forEach(item => {
+                if (item.chilren) {
+                    item.chilren = item.chilren.map(item => {
+                        item.component = () =>
+                            import ('../views/ ${item.url}')
+                        return item
+                    })
+                    menuArray.push(...item.chilren)
+                } else {
+                    item.component = () =>
+                        import ('../views/${item.url}')
+                    menuArray.push(item)
+                }
+            })
+            console.log(menuArray, 'menuArray')
 
         }
     }
