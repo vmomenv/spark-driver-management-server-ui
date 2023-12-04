@@ -53,7 +53,7 @@ export default {
                 if (item.children) {
                     item.children = item.children.map(item => {
                         item.component = () =>
-                            import (`../views/ ${item.url}`)
+                            import (`../views/${item.url}`)
                         return item
                     })
                     menuArray.push(...item.children)
