@@ -35,8 +35,9 @@ export default {
         },
         handleClick(command){
             if(command==='logout'){
-                //清除cookie中的token
+                //清除cookie中的token和menu
                 Cookie.remove('token')
+                Cookie.remove('menu')
                 //跳转到登录页面
                 this.$message.success('退出成功')
                 this.$router.push('/login')

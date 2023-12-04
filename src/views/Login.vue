@@ -50,11 +50,10 @@ export default{
 
                                 //获取菜单的数据，存入store中
                                 this.$store.commit('setMenu',data.data.menu)
-                                this.$route.commit('addMenu',this.$router)
+                                this.$store.commit('addMenu',this.$router)
                                 //跳转到首页
                                  this.$router.push('/home')
                             }else{
-                                
                                 this.$message.error(data.data.message)
                             }
                         })
